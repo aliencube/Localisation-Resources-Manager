@@ -1,0 +1,8 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<resource>
+	<items>
+		<item key="key1">밸류 1</item>
+		<item key="key2">밸류 2</item>
+		<item key="key3">밸류 3</item>
+	</items>
+</resource>
