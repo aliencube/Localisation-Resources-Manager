@@ -48,6 +48,8 @@
     <Compile Include="Resource.cs" />
     <Compile Include="ResourceElement.cs" />
     <Compile Include="ResourceElementCollection.cs" />
+    <Compile Include="XElementExtension.cs" />
+    <Compile Include="XmlNodeExtension.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config">

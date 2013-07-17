@@ -74,6 +74,20 @@ namespace Aliencube.Utilities.LocalisationResourcesManager.Configuration
             }
         }
 
+        private IList<IResource> _resources;
+        /// <summary>
+        /// Gets the whole list of localisation resources.
+        /// </summary>
+        public IList<IResource> Resources
+        {
+            get
+            {
+                if (this._resources == null || !this._resources.Any())
+                    this._resources = this.GetResources();
+                return this._resources;
+            }
+        }
+
         private IResource _resource;
         /// <summary>
         /// Gets the localisation resource with locale.
@@ -103,16 +117,26 @@ namespace Aliencube.Utilities.LocalisationResourcesManager.Configuration
 
         #region Methods
         /// <summary>
-        /// Gets the localisation resource data from the XML file.
+        /// Gets the whole list of localisation resources.
         /// </summary>
-        /// <param name="locale">Locale. Default is null.</param>
-        /// <returns>Returns the localisation resource data.</returns>
-        public IResource GetResource(string locale = null)
+        /// <returns></returns>
+        private IList<IResource> GetResources()
         {
-            if (!String.IsNullOrWhiteSpace(locale))
-                this._locale = locale;
+            var resources = this.Section
+                                .Resources
+                                .Cast<ResourceElement>()
+                                .Select(p => this.GetResource(p))
+                                .ToList();
+            return resources;
+        }
 
-            var element = this.Section.Resources[this.Locale];
+        /// <summary>
+        /// Gets the localisation resource instance derived from the localisation resource configuration element.
+        /// </summary>
+        /// <param name="element">Localisation resource configuration element.</param>
+        /// <returns>Returns the localisation resource instance derived from the localisation resource configuration element.</returns>
+        private IResource GetResource(ResourceElement element)
+        {
             if (element == null)
                 return null;
 
@@ -152,7 +176,25 @@ namespace Aliencube.Utilities.LocalisationResourcesManager.Configuration
                            .Elements("item")
                            .ToList();
 
-            var resource = items.Any() ? new Resource(items) : null;
+            var resource = items.Any() ? new Resource(element.Locale, items) : null;
+            return resource;
+        }
+
+        /// <summary>
+        /// Gets the localisation resource data from the XML file.
+        /// </summary>
+        /// <param name="locale">Locale. Default is null.</param>
+        /// <returns>Returns the localisation resource data.</returns>
+        private IResource GetResource(string locale = null)
+        {
+            if (!String.IsNullOrWhiteSpace(locale))
+                this._locale = locale;
+
+            var element = this.Section.Resources[this.Locale];
+            if (element == null)
+                return null;
+
+            var resource = this.GetResource(element);
             return resource;
         }
 

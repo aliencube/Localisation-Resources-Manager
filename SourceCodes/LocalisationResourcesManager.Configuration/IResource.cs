@@ -7,6 +7,14 @@ namespace Aliencube.Utilities.LocalisationResourcesManager.Configuration
     /// </summary>
     public interface IResource
     {
+        #region Properties
+        /// <summary>
+        /// Gets the locale of the localisation resources.
+        /// </summary>
+        string Locale { get; }
+        #endregion
+
+        #region Methods
         /// <summary>
         /// Gets the list of keys from the resource.
         /// </summary>
@@ -19,5 +27,6 @@ namespace Aliencube.Utilities.LocalisationResourcesManager.Configuration
         /// <param name="key">Key.</param>
         /// <returns>Returns the value corresponding to the key from the resource.</returns>
         string GetValue(string key);
+        #endregion
     }
 }
